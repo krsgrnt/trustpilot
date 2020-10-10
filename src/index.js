@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const createDictionary = require("./create-dictionary");
 const { firstPass, secondPass } = require("./reduce-dictionary");
 const runAlgorithm = require("./algorithm");

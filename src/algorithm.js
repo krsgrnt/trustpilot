@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { phraseBuilder, phraseVerifier } = require("./generate-phrase");
 const {
   hashData,
