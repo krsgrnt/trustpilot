@@ -1,22 +1,41 @@
 const { randomNumber } = require("./utils");
 
-const getRandomWord = (list) => {
-  const randomIndex = randomNumber(list.length);
-  return list[randomIndex];
+const getRandomWord = (list, minWordLength) => {
+  const wordGroupKeys = Object.keys(list).filter(
+    (key) => parseInt(key, 10) >= minWordLength
+  );
+  const randomGroupIndex = randomNumber(wordGroupKeys.length);
+  const groupKey = wordGroupKeys[randomGroupIndex];
+  const randomWordIndex = randomNumber(list[groupKey].length);
+  return list[groupKey][randomWordIndex];
 };
 
-const phraseBuilder = (list, length, phrase = "") => {
+const phraseBuilder = ({
+  list,
+  maxPhraseLength,
+  minWordLength = 0,
+  phrase = "",
+}) => {
   const builtPhrase = phrase
-    ? `${phrase} ${getRandomWord(list)}`
-    : getRandomWord(list);
+    ? `${phrase} ${getRandomWord(list, minWordLength)}`
+    : getRandomWord(list, minWordLength);
 
-  if (builtPhrase.length === 20) {
+  if (builtPhrase.length === maxPhraseLength) {
     return builtPhrase;
   }
-  if (builtPhrase.length < 20) {
-    return phraseBuilder(list, length, builtPhrase);
+  if (builtPhrase.length < maxPhraseLength) {
+    return phraseBuilder({
+      list,
+      maxPhraseLength,
+      minWordLength,
+      phrase: builtPhrase,
+    });
   }
-  return phraseBuilder(list, length);
+  return phraseBuilder({
+    list,
+    maxPhraseLength,
+    minWordLength,
+  });
 };
 
 const phraseVerifier = (phrase, anagram) => {

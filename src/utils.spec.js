@@ -1,47 +1,16 @@
 const {
   hashData,
-  hashVerifier,
-  getHashKey,
   getLetters,
   randomNumber,
   msToMinutesAndSeconds,
+  groupList,
 } = require("./utils");
 
 describe("utils", () => {
-  const testData = {
-    easy: "e4820b45d2277f3844eac66c903e84be",
-    hard: "23170acc097c24edb98fc5488ab033fe",
-    difficult: "665e5bcb0c20062fe8abaaf4628bb154",
-  };
-
   describe("hashData", () => {
     it("hashes a given string with MD5", () => {
       const testString = "poultry outwits ants";
       expect(hashData(testString)).toEqual("8b35bbd7ff2f5dd7c94fffbb1a3512bc");
-    });
-  });
-
-  describe("hashVerifier", () => {
-    it("compares a hash against a list of hashes", () => {
-      const { easy, hard, difficult } = testData;
-      expect(hashVerifier(easy, testData)).toEqual(true);
-      expect(hashVerifier(hard, testData)).toEqual(true);
-      expect(hashVerifier(difficult, testData)).toEqual(true);
-      expect(hashVerifier("some hash", testData)).toEqual(false);
-    });
-  });
-
-  describe("getHashKey", () => {
-    it("returns the key for a given hash", () => {
-      expect(getHashKey("e4820b45d2277f3844eac66c903e84be", testData)).toEqual(
-        "easy"
-      );
-      expect(getHashKey("23170acc097c24edb98fc5488ab033fe", testData)).toEqual(
-        "hard"
-      );
-      expect(getHashKey("665e5bcb0c20062fe8abaaf4628bb154", testData)).toEqual(
-        "difficult"
-      );
     });
   });
 
@@ -69,6 +38,18 @@ describe("utils", () => {
   describe("msToMinutesAndSeconds", () => {
     it("returns minutes and seconds for a given number of milliseconds", () => {
       expect(msToMinutesAndSeconds(300000)).toEqual("5:00");
+      expect(msToMinutesAndSeconds(10000)).toEqual("0:10");
+    });
+  });
+
+  describe("groupList", () => {
+    it("sorts words into groups by length", () => {
+      const testWords = ["poultry", "outwits", "ants", "zebedee", "zirconium"];
+      expect(groupList(testWords)).toEqual({
+        4: ["ants"],
+        7: ["poultry", "outwits", "zebedee"],
+        9: ["zirconium"],
+      });
     });
   });
 });

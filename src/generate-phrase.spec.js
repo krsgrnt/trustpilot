@@ -1,40 +1,42 @@
 const { phraseBuilder, phraseVerifier } = require("./generate-phrase");
 
-const list = [
-  "ant",
-  "anti",
-  "antis",
-  "antitrust",
-  "ants",
-  "anuity",
-  "anul",
-  "anuls",
-  "anus",
-  "any",
-  "aol",
-  "aply",
-  "apoint",
-  "apoints",
-  "apolo",
-  "apolos",
-  "aportion",
-  "aportions",
-  "apr",
-  "april",
-];
+const list = {
+  3: ["out", "put"],
+  4: ["alpo"],
+  5: ["inlaw", "rutty", "atony"],
+  6: ["twirls", "tryout"],
+  7: ["outputs"],
+  8: ["outposts", "untwists"],
+};
 
 describe("generate-phrase", () => {
   describe("phraseBuilder", () => {
     it("generates a random phrase from a list of words to a given length", () => {
-      const phraseLength = 20;
+      const maxPhraseLength = 20;
 
-      expect(phraseBuilder(list, phraseLength).length).toEqual(20);
+      expect(phraseBuilder({ list, maxPhraseLength }).length).toEqual(20);
       expect(
-        phraseBuilder(list, phraseLength).length
+        phraseBuilder({ list, maxPhraseLength }).length
       ).not.toBeGreaterThanOrEqual(21);
-      expect(phraseBuilder(list, phraseLength).length).not.toBeLessThanOrEqual(
-        19
-      );
+      expect(
+        phraseBuilder({ list, maxPhraseLength }).length
+      ).not.toBeLessThanOrEqual(19);
+    });
+
+    it("generates a random phrase of a given length without words under a minimum length", () => {
+      const maxPhraseLength = 20;
+      const minWordLength = 5;
+
+      const invalidWords = ["out", "put", "alpo"];
+      const generatedPhrase = phraseBuilder({
+        list,
+        maxPhraseLength,
+        minWordLength,
+      });
+
+      expect(
+        invalidWords.some((word) => generatedPhrase.split(" ").includes(word))
+      ).toBe(false);
     });
   });
 
